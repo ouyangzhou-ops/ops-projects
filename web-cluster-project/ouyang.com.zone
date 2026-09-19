@@ -1,0 +1,10 @@
+$TTL 1D
+@   IN SOA  ouyang.com. admin.ouyang.com. (
+            0   ; serial
+            1D  ; refresh
+            1H  ; retry
+            1W  ; expire
+            3H )
+    IN NS  ns.ouyang.com.
+ns  IN A   192.168.194.135
+www IN A   192.168.194.100

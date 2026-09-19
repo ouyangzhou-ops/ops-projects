@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: 'web-cluster-nodes'
+    static_configs:
+      - targets:
+        - 192.168.194.128:9100
+        - 192.168.194.129:9100
+        - 192.168.194.133:9100
+        - 192.168.194.134:9100
+        - 192.168.194.135:9100
