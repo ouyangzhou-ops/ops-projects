@@ -1,0 +1,23 @@
+# Prometheus 抓取配置（K8s 项目）
+# 部署位置：master 节点 /opt/prometheus/prometheus.yml
+# 两个 job：
+#   k8s-nodes          抓取 3 台节点的 node-exporter（9100）
+#   kube-state-metrics 抓取集群对象状态指标
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # 1. 节点指标：node-exporter（DaemonSet，每节点 hostNetwork:9100）
+  - job_name: 'k8s-nodes'
+    static_configs:
+      - targets:
+        - 192.168.194.130:9100   # k8s-master
+        - 192.168.194.131:9100   # k8s-node-1
+        - 192.168.194.132:9100   # k8s-node-2
+
+  # 2. 集群对象状态：kube-state-metrics（Service 暴露在 kube-system）
+  - job_name: 'kube-state-metrics'
+    static_configs:
+      - targets:
+        - 192.168.194.130:8080   # kube-state-metrics Service NodePort/端口按实际部署确认

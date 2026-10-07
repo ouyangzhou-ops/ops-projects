@@ -21,6 +21,8 @@
 
 ## 实施步骤
 
+> 完整逐步操作手册（含每步命令与验证）见 [deployment-guide.md](deployment-guide.md)，按「环境初始化 → kubeadm 集群 → Calico → 镜像制作 → 应用部署 → HPA → 监控 → 演练」逐步执行。
+
 1. **业务镜像制作**：Dockerfile 构建 nginx 业务镜像 webapp:v1/v2，分发至各节点
 2. **Deployment 部署**：多副本部署 + 资源限制（requests/limits）+ 滚动更新 + 版本回滚
 3. **Service**：ClusterIP 提供服务内部访问与负载均衡
@@ -33,12 +35,14 @@
 
 | 文件 | 说明 |
 |---|---|
+| [deployment-guide.md](deployment-guide.md) | **完整实施手册**：环境初始化、kubeadm 建集群、Calico、镜像分发、Ingress、HPA、监控、演练的逐步命令与验证 |
 | [webapp.yaml](webapp.yaml) | Deployment（3 副本 + 资源限制） |
 | [svc.yaml](svc.yaml) | Service ClusterIP:80 |
 | [ingress.yaml](ingress.yaml) | Ingress 域名路由（ingressClassName: nginx） |
 | [hpa.yaml](hpa.yaml) | HPA（CPU 50%，1~5 副本） |
 | [node-exporter.yaml](node-exporter.yaml) | 节点指标采集 DaemonSet（含 master 污点容忍） |
 | [kube-state-metrics.yaml](kube-state-metrics.yaml) | 集群对象状态采集（含 RBAC） |
+| [prometheus.yml](prometheus.yml) | Prometheus 抓取配置（k8s-nodes + kube-state-metrics 两个 job） |
 | [Dockerfile](Dockerfile) | 业务镜像构建 |
 
 ## 排障记录

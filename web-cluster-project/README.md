@@ -41,14 +41,22 @@ LVS + Keepalived + Nginx + Ansible + Prometheus + Grafana + NFS + MySQL + DNS
 
 ## 配置文件说明
 
+> 完整逐步操作手册（含每步命令与验证）见 [deployment-guide.md](deployment-guide.md)，按「环境初始化 → LVS/Keepalived → RS 配置 → Nginx → NFS → DNS → MySQL → 堡垒机 → Ansible → 监控 → 压测演练」逐步执行。
+
 | 文件 | 说明 |
 |---|---|
-| `keepalived-lb1.conf` | Keepalived + LVS DR 模式配置（lb2 仅 state/priority 不同） |
-| `nginx-vhost.conf` | Nginx 虚拟主机（www.ouyang.com / www.zhou.com） |
-| `prometheus.yml` | Prometheus 抓取 5 个 node-exporter |
-| `ansible-hosts.ini` | Ansible 主机分组（lb/web/db） |
-| `nfs-exports` | NFS 共享配置 |
-| `named.conf` + `*.zone` | BIND DNS 解析配置 |
+| [deployment-guide.md](deployment-guide.md) | **完整实施手册**：5 台机器从初始化到上线的全部命令、配置落位与验证 |
+| [keepalived-lb1.conf](keepalived-lb1.conf) | Keepalived + LVS DR 配置（LB1 MASTER） |
+| [keepalived-lb2.conf](keepalived-lb2.conf) | Keepalived + LVS DR 配置（LB2 BACKUP，state/priority/router_id 不同） |
+| [ifcfg-lo0.conf](ifcfg-lo0.conf) | RS 的 lo:0 绑定 VIP 持久化配置 |
+| [arp-sysctl.conf](arp-sysctl.conf) | RS 的 ARP 抑制参数（arp_ignore / arp_announce） |
+| [nginx-vhost.conf](nginx-vhost.conf) | Nginx 虚拟主机（www.ouyang.com / www.zhou.com） |
+| [prometheus.yml](prometheus.yml) | Prometheus 抓取 5 个 node-exporter |
+| [ansible-hosts.ini](ansible-hosts.ini) | Ansible 主机分组（lb/web/db） |
+| [nfs-exports](nfs-exports) | NFS 共享配置 |
+| [named.conf](named.conf) + [ouyang.com.zone](ouyang.com.zone) / [zhou.com.zone](zhou.com.zone) | BIND DNS 解析配置 |
+| [hosts.allow](hosts.allow) / [hosts.deny](hosts.deny) | 堡垒机访问控制（仅 max 可 SSH Web） |
+| [mysql-init.sql](mysql-init.sql) | MySQL 建库与远程账号授权 |
 
 ## 关键技术点
 
